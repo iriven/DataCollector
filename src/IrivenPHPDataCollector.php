@@ -1,7 +1,7 @@
 <?php
 namespace Iriven;
 
-class DataCollector implements \IteratorAggregate, \Countable
+class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
 {
     /**
      * Parameter storage.
