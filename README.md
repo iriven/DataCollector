@@ -4,7 +4,7 @@ Iriven DataCollector is a PHP container for key/value pairs
 
 > Usage:
 
-- $Author =  new \Iriven\ IrivenPHPDataCollector([
+- $Author =  new \Iriven\IrivenPHPDataCollector([
                             'name'          => $name,
                             'email'         => $email,
                             'homepage'      => $homepage,
@@ -25,7 +25,7 @@ Iriven DataCollector is a PHP container for key/value pairs
 > Other methodes:
 
 ** methode 1:
-- $Author =  new \Iriven\ IrivenPHPDataCollector();
+- $Author =  new \Iriven\IrivenPHPDataCollector();
 - $Author->add([
                             'name'          => $name,
                             'email'         => $email,
@@ -34,3 +34,15 @@ Iriven DataCollector is a PHP container for key/value pairs
                             'description'   => $description
                         ]);
 
+** methode 2:
+- $Author =  new \Iriven\IrivenPHPDataCollector();
+
+- $Author->set('name',$name);
+
+- $Author->set('email', $email);
+
+- $Author->set('homepage',$homepage);
+
+- $Author->set('role', $role);
+
+- $Author->set('description',$description);
