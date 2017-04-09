@@ -3,7 +3,6 @@ namespace Iriven;
 
 class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
 {
-    
     /**
      * Parameter storage.
      *
@@ -116,7 +115,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function getAlpha($key, $default = '')
     {
-        return preg_replace('/[^[:alpha:]]/', '', $this->get(strtolower($key), $default));
+        return preg_replace('/[^[:alpha:]]/', '', $this->get($key, $default));
     }
     /**
      * Returns the alphabetic characters and digits of the parameter value.
@@ -128,7 +127,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function getAlnum($key, $default = '')
     {
-        return preg_replace('/[^[:alnum:]]/', '', $this->get(strtolower($key), $default));
+        return preg_replace('/[^[:alnum:]]/', '', $this->get($key, $default));
     }
     /**
      * Returns the digits of the parameter value.
@@ -141,7 +140,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
     public function getDigits($key, $default = '')
     {
         // we need to remove - and + because they're allowed in the filter
-        return str_replace(array('-', '+'), '', $this->filter(strtolower($key), $default, FILTER_SANITIZE_NUMBER_INT));
+        return str_replace(array('-', '+'), '', $this->filter($key, $default, FILTER_SANITIZE_NUMBER_INT));
     }
     /**
      * Returns the parameter value converted to integer.
@@ -153,7 +152,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function getInt($key, $default = 0)
     {
-        return (int) $this->get(strtolower($key), $default);
+        return (int) $this->get($key, $default);
     }
     /**
      * Returns the parameter value converted to boolean.
@@ -165,7 +164,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function getBoolean($key, $default = false)
     {
-        return $this->filter(strtolower($key), $default, FILTER_VALIDATE_BOOLEAN);
+        return $this->filter($key, $default, FILTER_VALIDATE_BOOLEAN);
     }
     /**
      * Filter key.
@@ -181,7 +180,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function filter($key, $default = null, $filter = FILTER_DEFAULT, $options = array())
     {
-        $value = $this->get(strtolower($key), $default);
+        $value = $this->get($key, $default);
         // Always turn $options into an array - this allows filter_var option shortcuts.
         if (!is_array($options) && $options) {
             $options = array('flags' => $options);
