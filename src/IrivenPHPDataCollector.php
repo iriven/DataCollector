@@ -3,6 +3,7 @@ namespace Iriven;
 
 class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
 {
+    
     /**
      * Parameter storage.
      *
@@ -16,7 +17,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function __construct(array $parameters = array())
     {
-        $this->parameters = $parameters;
+        $this->parameters = array_change_key_case($parameters,CASE_LOWER);
     }
     /**
      * Returns the parameters.
@@ -27,6 +28,15 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
     {
         return $this->parameters;
     }
+
+    /**
+     * Clears all parameters.
+     *
+     */
+     public function clear()
+      {
+         $this->parameters = array();
+      }
     /**
      * Returns the parameter keys.
      *
@@ -43,7 +53,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function replace(array $parameters = array())
     {
-        $this->parameters = $parameters;
+        $this->parameters = array_change_key_case($parameters,CASE_LOWER);
     }
     /**
      * Adds parameters.
@@ -52,7 +62,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function add(array $parameters = array())
     {
-        $this->parameters = array_replace($this->parameters, $parameters);
+        $this->parameters = array_replace($this->parameters, array_change_key_case($parameters,CASE_LOWER));
     }
     /**
      * Returns a parameter by name.
@@ -64,7 +74,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function get($key, $default = null)
     {
-        return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : $default;
+        return array_key_exists(strtolower($key), $this->parameters) ? $this->parameters[strtolower($key)] : $default;
     }
     /**
      * Sets a parameter by name.
@@ -74,7 +84,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function set($key, $value)
     {
-        $this->parameters[$key] = $value;
+        $this->parameters[strtolower($key)] = $value;
     }
     /**
      * Returns true if the parameter is defined.
@@ -85,7 +95,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function has($key)
     {
-        return array_key_exists($key, $this->parameters);
+        return array_key_exists(strtolower($key), $this->parameters);
     }
     /**
      * Removes a parameter.
@@ -94,7 +104,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function remove($key)
     {
-        unset($this->parameters[$key]);
+        unset($this->parameters[strtolower($key)]);
     }
     /**
      * Returns the alphabetic characters of the parameter value.
@@ -106,7 +116,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function getAlpha($key, $default = '')
     {
-        return preg_replace('/[^[:alpha:]]/', '', $this->get($key, $default));
+        return preg_replace('/[^[:alpha:]]/', '', $this->get(strtolower($key), $default));
     }
     /**
      * Returns the alphabetic characters and digits of the parameter value.
@@ -118,7 +128,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function getAlnum($key, $default = '')
     {
-        return preg_replace('/[^[:alnum:]]/', '', $this->get($key, $default));
+        return preg_replace('/[^[:alnum:]]/', '', $this->get(strtolower($key), $default));
     }
     /**
      * Returns the digits of the parameter value.
@@ -131,7 +141,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
     public function getDigits($key, $default = '')
     {
         // we need to remove - and + because they're allowed in the filter
-        return str_replace(array('-', '+'), '', $this->filter($key, $default, FILTER_SANITIZE_NUMBER_INT));
+        return str_replace(array('-', '+'), '', $this->filter(strtolower($key), $default, FILTER_SANITIZE_NUMBER_INT));
     }
     /**
      * Returns the parameter value converted to integer.
@@ -143,7 +153,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function getInt($key, $default = 0)
     {
-        return (int) $this->get($key, $default);
+        return (int) $this->get(strtolower($key), $default);
     }
     /**
      * Returns the parameter value converted to boolean.
@@ -155,7 +165,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function getBoolean($key, $default = false)
     {
-        return $this->filter($key, $default, FILTER_VALIDATE_BOOLEAN);
+        return $this->filter(strtolower($key), $default, FILTER_VALIDATE_BOOLEAN);
     }
     /**
      * Filter key.
@@ -171,7 +181,7 @@ class IrivenPHPDataCollector implements \IteratorAggregate, \Countable
      */
     public function filter($key, $default = null, $filter = FILTER_DEFAULT, $options = array())
     {
-        $value = $this->get($key, $default);
+        $value = $this->get(strtolower($key), $default);
         // Always turn $options into an array - this allows filter_var option shortcuts.
         if (!is_array($options) && $options) {
             $options = array('flags' => $options);
