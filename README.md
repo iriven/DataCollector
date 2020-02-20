@@ -13,13 +13,9 @@ Iriven DataCollector is a PHP container for key/value pairs
                         ]);
                         
 - $Author->get('name',null);
-
 - $Author->get('email',null);
-
 - $Author->get('homepage',null);
-
 - $Author->get('role',null);
-
 - $Author->get('description',null);
 
 > Other methodes:
